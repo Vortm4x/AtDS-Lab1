@@ -9,7 +9,8 @@ struct Node
     Node();
     Node(T data, Node<T>* next);
 };
-/*
+
+template<typename T>
 class List
 {
 private:
@@ -21,8 +22,6 @@ public:
 
 };
 
-*/
-
 template<typename T>
 Node<T>::Node()
 {
@@ -31,16 +30,21 @@ Node<T>::Node()
 
 template<typename T>
 Node<T>::Node(T data, Node<T>* next)
-    {
+{
         this->data = data;
         this->next = next;
-    }
+}
+
+template<typename T>
+List<T>::List()
+{
+    head = nullptr;
+    count = 0;
+}
 
 int main()
 {
-    Node<int>* node = new Node<int>(5, nullptr);
-    std::cout << node->data;
-
+    List<int> numbers;
 
     return 0;
 }
