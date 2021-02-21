@@ -32,7 +32,8 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
-    void add(T data);
+    void addNode(T data);
+    T deleteNode(T data);
 };
 
 // -------------------------------
@@ -119,13 +120,12 @@ bool List<T>::isEmpty()
     return (head == nullptr);
 }
 
-
-// -----------------------------
-//  void List<T>::add(T data)
-//
-// ----------------------------
+// -------------------------------
+//  void List<T>::addNode(T data)
+//  Adds a new node to head
+// -------------------------------
 template<typename T>
-void List<T>::add(T data)
+void List<T>::addNode(T data)
 {
     if(!isFull())
     {
@@ -138,11 +138,66 @@ void List<T>::add(T data)
     }
 }
 
+// ------------------------------
+//  T List<T>deleteNode(T data);
+//  Deletes a first found
+//  node with same value
+// -----------------------------
+template<typename T>
+T List<T>::deleteNode(T data)
+{
+    //Empty list
+    if(isEmpty())
+    {
+        std::cout << "List underflow\n";
+        return 0x3f3f3f3f;
+    }
+
+    Node<T>* previous = nullptr;
+    Node<T>* following = head;
+
+    while((following != nullptr) && (following->data != data))
+    {
+        previous = following;
+        following = following->next;
+    }
+    int result = 0;
+
+    //Node is the head
+    if((previous == nullptr) && (following != nullptr) && (following->data == data))
+    {
+        result = following->data;
+        head = head->next;
+        delete following;
+        --count;
+        return result;
+    }//Node is not head
+    else if((previous !=
+             nullptr) && (following != nullptr) && (following->data== data))
+    {
+        result = following->data;
+        previous->next = following-> next;
+        delete following;
+        --count;
+        return result;
+    }
+    else
+    {
+        std::cout << "Item wasn't found and not deleted";
+        return 0x3f3f3f3f;
+    }
+}
+
 int main()
 {
     List<int> numbers;
-    numbers.add(123);
-    numbers.add(567);
+    for(int i = 0; i < 6; ++i)
+    {
+        numbers.addNode(i);
+    }
+
+    std::cout << numbers.deleteNode(12);
+    std::cout << numbers.deleteNode(4);
 
     return 0;
 }
