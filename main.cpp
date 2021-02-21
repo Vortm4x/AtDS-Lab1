@@ -23,12 +23,14 @@ template<typename T>
 class List
 {
 private:
-    int count;
+    int length;
     Node<T>* head;
 
 public:
     List();
     ~List();
+    int length();
+    void add(T data);
 };
 
 // -------------------------------
@@ -60,7 +62,7 @@ template<typename T>
 List<T>::List()
 {
     head = nullptr;
-    count = 0;
+    length = 0;
 }
 
 // ----------------------------
@@ -70,7 +72,7 @@ List<T>::List()
 template<typename T>
 List<T>::~List()
 {
-    count = 0;
+    length = 0;
     Node<T>* current;
 
     while(head != nullptr)
@@ -79,6 +81,26 @@ List<T>::~List()
         head = head->next;
         delete current;
     }
+}
+
+// -------------------------
+//  int List<T>::length()
+//  Returns a list length
+// -------------------------
+template<typename T>
+int List<T>::length()
+{
+    return length;
+}
+
+// -------------------------
+//  void List<T>::add(T data)
+//
+// -------------------------
+template<typename T>
+void List<T>::add(T data)
+{
+
 }
 
 int main()
