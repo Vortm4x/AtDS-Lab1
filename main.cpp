@@ -127,13 +127,22 @@ bool List<T>::isEmpty()
 template<typename T>
 void List<T>::add(T data)
 {
-
+    if(!isFull())
+    {
+        head = new Node<T>(data, head);
+        ++count;
+    }
+    else
+    {
+        std::cout << "List overflow\n";
+    }
 }
 
 int main()
 {
     List<int> numbers;
-    std::cout << numbers.isEmpty();
+    numbers.add(123);
+    numbers.add(567);
 
     return 0;
 }
