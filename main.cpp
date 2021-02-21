@@ -23,13 +23,14 @@ template<typename T>
 class List
 {
 private:
-    int length;
+    int count;
     Node<T>* head;
 
 public:
     List();
     ~List();
     int length();
+    bool isFull();
     void add(T data);
 };
 
@@ -61,8 +62,8 @@ Node<T>::Node(T data, Node<T>* next)
 template<typename T>
 List<T>::List()
 {
+    count = 0;
     head = nullptr;
-    length = 0;
 }
 
 // ----------------------------
@@ -72,7 +73,7 @@ List<T>::List()
 template<typename T>
 List<T>::~List()
 {
-    length = 0;
+    count = 0;
     Node<T>* current;
 
     while(head != nullptr)
@@ -90,13 +91,27 @@ List<T>::~List()
 template<typename T>
 int List<T>::length()
 {
-    return length;
+    return count;
 }
 
-// -------------------------
+
+// ------------------------------
+//  bool List<T>::isFull()
+//  Checks memory overflow
+// -----------------------------
+template<typename T>
+bool List<T>::isFull()
+{
+    Node<T>* test = new Node<T>();
+    bool result = (test == nullptr);
+    delete test;
+    return result;
+}
+
+// -----------------------------
 //  void List<T>::add(T data)
 //
-// -------------------------
+// ----------------------------
 template<typename T>
 void List<T>::add(T data)
 {
@@ -106,6 +121,7 @@ void List<T>::add(T data)
 int main()
 {
     List<int> numbers;
+    std::cout << numbers.isFull();
 
     return 0;
 }
