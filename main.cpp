@@ -31,6 +31,7 @@ public:
     ~List();
     int length();
     bool isFull();
+    bool isEmpty();
     void add(T data);
 };
 
@@ -108,6 +109,17 @@ bool List<T>::isFull()
     return result;
 }
 
+// ---------------------------------
+//  bool List<T>::isEmpty()
+//  Checks the nodes existance
+// ---------------------------------
+template<typename T>
+bool List<T>::isEmpty()
+{
+    return (head == nullptr);
+}
+
+
 // -----------------------------
 //  void List<T>::add(T data)
 //
@@ -121,7 +133,7 @@ void List<T>::add(T data)
 int main()
 {
     List<int> numbers;
-    std::cout << numbers.isFull();
+    std::cout << numbers.isEmpty();
 
     return 0;
 }
