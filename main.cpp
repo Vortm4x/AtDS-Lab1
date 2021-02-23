@@ -32,7 +32,8 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
-    void add(T data);
+    void addFirst(T data);
+	void addLast(T data);
 };
 
 // -------------------------------
@@ -121,11 +122,11 @@ bool List<T>::isEmpty()
 
 
 // -----------------------------
-//  void List<T>::add(T data)
+//  void List<T>::addFirst(T data)
 //
 // ----------------------------
 template<typename T>
-void List<T>::add(T data)
+void List<T>::addFirst(T data)
 {
     if(!isFull())
     {
@@ -138,11 +139,47 @@ void List<T>::add(T data)
     }
 }
 
+// -----------------------------
+//  void List<T>::addLast(T data)
+//
+// ----------------------------
+template<typename T>
+void List<T>::addLast(T data)
+{
+	if (!isFull())
+	{
+		if(!isEmpty)
+		{
+			Node<T>* end = head;
+
+			while (end->next != nullptr)
+			{
+				end = end->next;
+			}
+
+			end->next = new Node(data, end->next);
+		}
+		else
+		{
+			head = new Node<T>(data, head);
+		}
+
+		++count;
+	}
+	else
+	{
+		std::cout << "List overflow\n";
+	}
+}
+
 int main()
 {
     List<int> numbers;
-    numbers.add(123);
-    numbers.add(567);
+   
+	for (int i(0); i < 6; ++i)
+	{
+		numbers.addFirst(i);
+	}
 
     return 0;
 }
