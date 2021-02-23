@@ -7,11 +7,10 @@
 template<typename T>
 struct Node
 {
-    Node<T>* next;
-    T data;
+	Node<T>* next;
+	T data;
 
-    Node();
-    Node(T data, Node<T>* next);
+	Node(T data = T(), Node<T>* next = nullptr);
 };
 
 // -------------------------------------------
@@ -36,19 +35,9 @@ public:
 	void addLast(const T& data);
 };
 
-// -------------------------------
-//  Node<T>::Node()
-//  Default node constructor
-// -------------------------------
-template<typename T>
-Node<T>::Node()
-{
-        next = nullptr;
-}
-
 // -----------------------------------------------
 //  Node<T>::Node(T data, Node<T>* next)
-//  Node constructor  with params
+//  Node constructor  with default params
 // -----------------------------------------------
 template<typename T>
 Node<T>::Node(T data, Node<T>* next)
@@ -121,7 +110,7 @@ bool List<T>::isEmpty()
 }
 
 // -----------------------------------------
-//  void List<T>::addFirst(T data)
+//  void List<T>::addFirst(const T& data)
 //  Puts the node on the begin of list
 // -----------------------------------------
 template<typename T>
@@ -140,7 +129,7 @@ void List<T>::addFirst(const T& data)
 
 
 // ---------------------------------------
-//  void List<T>::addFirst(T data)
+//  void List<T>::addLast(const T& data)
 //	  Puts the node to the end of list
 // ---------------------------------------
 template<typename T>
@@ -148,22 +137,17 @@ void List<T>::addLast(const T& data)
 {
 	if (!isFull())
 	{
+		Node<T>* end = head;
+
 		if(!isEmpty)
 		{
-			Node<T>* end = head;
-
 			while (end->next != nullptr)
 			{
 				end = end->next;
 			}
-
-			end->next = new Node(data, end->next);
-		}
-		else
-		{
-			head = new Node<T>(data, head);
 		}
 
+		end->next = new Node(data);
 		++count;
 	}
 	else
