@@ -32,8 +32,8 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
-    void addNode(T data);
-    T deleteNode(T data);
+    void addFirst(const T& data);
+	void addLast(const T& data);
 };
 
 // -------------------------------
@@ -120,12 +120,12 @@ bool List<T>::isEmpty()
     return (head == nullptr);
 }
 
-// -------------------------------
-//  void List<T>::addNode(T data)
-//  Adds a new node to head
-// -------------------------------
+// -----------------------------------------
+//  void List<T>::addFirst(T data)
+//  Puts the node on the begin of list
+// -----------------------------------------
 template<typename T>
-void List<T>::addNode(T data)
+void List<T>::addFirst(const T& data)
 {
     if(!isFull())
     {
@@ -138,66 +138,48 @@ void List<T>::addNode(T data)
     }
 }
 
-// ------------------------------
-//  T List<T>deleteNode(T data);
-//  Deletes a first found
-//  node with same value
-// -----------------------------
+
+// ---------------------------------------
+//  void List<T>::addFirst(T data)
+//	  Puts the node to the end of list
+// ---------------------------------------
 template<typename T>
-T List<T>::deleteNode(T data)
+void List<T>::addLast(const T& data)
 {
-    //Empty list
-    if(isEmpty())
-    {
-        std::cout << "List underflow\n";
-        return 0x3f3f3f3f;
-    }
+	if (!isFull())
+	{
+		if(!isEmpty)
+		{
+			Node<T>* end = head;
 
-    Node<T>* previous = nullptr;
-    Node<T>* following = head;
+			while (end->next != nullptr)
+			{
+				end = end->next;
+			}
 
-    while((following != nullptr) && (following->data != data))
-    {
-        previous = following;
-        following = following->next;
-    }
-    int result = 0;
+			end->next = new Node(data, end->next);
+		}
+		else
+		{
+			head = new Node<T>(data, head);
+		}
 
-    //Node is the head
-    if((previous == nullptr) && (following != nullptr) && (following->data == data))
-    {
-        result = following->data;
-        head = head->next;
-        delete following;
-        --count;
-        return result;
-    }//Node is not head
-    else if((previous !=
-             nullptr) && (following != nullptr) && (following->data== data))
-    {
-        result = following->data;
-        previous->next = following-> next;
-        delete following;
-        --count;
-        return result;
-    }
-    else
-    {
-        std::cout << "Item wasn't found and not deleted";
-        return 0x3f3f3f3f;
-    }
+		++count;
+	}
+	else
+	{
+		std::cout << "List overflow\n";
+	}
 }
 
 int main()
 {
     List<int> numbers;
-    for(int i = 0; i < 6; ++i)
-    {
-        numbers.addNode(i);
-    }
-
-    std::cout << numbers.deleteNode(12);
-    std::cout << numbers.deleteNode(4);
+   
+	for (int i(0); i < 6; ++i)
+	{
+		numbers.addFirst(i);
+	}
 
     return 0;
 }
