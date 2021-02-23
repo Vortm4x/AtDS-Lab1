@@ -10,7 +10,7 @@ struct Node
 	Node<T>* next;
 	T data;
 
-	Node(T data = T(), Node<T>* next = nullptr);
+	Node(const T& data = T(), Node<T> *const next = nullptr);
 };
 
 // -------------------------------------------
@@ -31,6 +31,7 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
+	void print();
     void addFirst(const T& data);
 	void addLast(const T& data);
 };
@@ -40,7 +41,7 @@ public:
 //  Node constructor  with default params
 // -----------------------------------------------
 template<typename T>
-Node<T>::Node(T data, Node<T>* next)
+Node<T>::Node(const T& data, Node<T> *const next)
 {
         this->data = data;
         this->next = next;
@@ -109,10 +110,10 @@ bool List<T>::isEmpty()
     return (head == nullptr);
 }
 
-// -----------------------------------------
+// -----------------------------------------------
 //  void List<T>::addFirst(const T& data)
 //  Puts the node on the begin of list
-// -----------------------------------------
+// ----------------------------------------------
 template<typename T>
 void List<T>::addFirst(const T& data)
 {
@@ -127,32 +128,59 @@ void List<T>::addFirst(const T& data)
     }
 }
 
-
-// ---------------------------------------
+// ---------------------------------------------
 //  void List<T>::addLast(const T& data)
 //	  Puts the node to the end of list
-// ---------------------------------------
+// --------------------------------------------
 template<typename T>
 void List<T>::addLast(const T& data)
 {
 	if (!isFull())
 	{
-		Node<T>* end = head;
-
-		if(!isEmpty)
+		if(!isEmpty())
 		{
+			Node<T>* end = head;
+
 			while (end->next != nullptr)
 			{
 				end = end->next;
 			}
-		}
 
-		end->next = new Node(data);
+			end->next = new Node<T>(data);
+		}
+		else
+		{
+			head = new Node<T>(data);
+		}
 		++count;
 	}
 	else
 	{
 		std::cout << "List overflow\n";
+	}
+}
+
+// --------------------------
+//  void List<T>::print()
+//	  Prints the list
+// -------------------------
+template<typename T>
+void List<T>::print()
+{
+	if (!isEmpty())
+	{
+		Node<T>* current = head;
+
+		while (current != nullptr)
+		{
+			std::cout << current->data << ", ";
+			current = current->next;
+		}
+		std::cout << std::endl;
+	}
+	else
+	{
+		std::cout << "<EMPTY>\n";
 	}
 }
 
@@ -162,8 +190,10 @@ int main()
    
 	for (int i(0); i < 6; ++i)
 	{
-		numbers.addFirst(i);
+		numbers.addLast(i);
 	}
+
+	numbers.print();
 
     return 0;
 }
