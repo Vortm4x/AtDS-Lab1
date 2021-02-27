@@ -32,8 +32,9 @@ public:
     bool isFull();
     bool isEmpty();
 	void print();
-    void addFirst(const T& data);
-	void addLast(const T& data);
+    void unshift(const T& data);
+	void push_back(const T& data);
+	T pop_back();
 };
 
 // -----------------------------------------------
@@ -111,11 +112,11 @@ bool List<T>::isEmpty()
 }
 
 // -----------------------------------------------
-//  void List<T>::addFirst(const T& data)
+//  void List<T>::unshift(const T& data)
 //  Puts the node on the begin of list
 // ----------------------------------------------
 template<typename T>
-void List<T>::addFirst(const T& data)
+void List<T>::unshift(const T& data)
 {
     if(!isFull())
     {
@@ -129,11 +130,11 @@ void List<T>::addFirst(const T& data)
 }
 
 // ---------------------------------------------
-//  void List<T>::addLast(const T& data)
+//  void List<T>::push_back(const T& data)
 //	  Puts the node to the end of list
 // --------------------------------------------
 template<typename T>
-void List<T>::addLast(const T& data)
+void List<T>::push_back(const T& data)
 {
 	if (!isFull())
 	{
@@ -157,6 +158,38 @@ void List<T>::addLast(const T& data)
 	else
 	{
 		std::cout << "List overflow\n";
+	}
+}
+
+// ---------------------------------------------
+//  T List<T>::pop_back()
+//	  Deletes the node at the end of list
+// --------------------------------------------
+template<typename T>
+T List<T>::pop_back()
+{
+	if (!isEmpty())
+	{
+		Node<T>* end = head;
+		Node<T>* current = nullptr;
+
+		while(end->next != nullptr)
+		{
+			current = end;
+			end = end->next;
+		}
+
+		(current == nullptr) ? head = nullptr : current->next = nullptr;
+
+		T data = end->data;
+		delete end;
+		--count;
+
+		return data;
+	}
+	else
+	{
+		return T();
 	}
 }
 
@@ -190,10 +223,13 @@ int main()
    
 	for (int i(0); i < 6; ++i)
 	{
-		numbers.addLast(i);
+		numbers.push_back(i);
 	}
 
 	numbers.print();
+	std::cout << numbers.pop_back() << '\n';
+	numbers.print();
+
 
     return 0;
 }
