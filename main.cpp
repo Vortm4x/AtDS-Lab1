@@ -33,6 +33,7 @@ public:
     bool isEmpty();
 	void print();
     void unshift(const T& data);
+	T shift();
 	void push_back(const T& data);
 	T pop_back();
 };
@@ -127,6 +128,30 @@ void List<T>::unshift(const T& data)
     {
         std::cout << "List overflow\n";
     }
+}
+
+// -----------------------------------------------
+//  T List<T>::shift()
+//  Deletes the node on the begin of list
+// ----------------------------------------------
+template<typename T>
+T List<T>::shift()
+{
+	if (!isEmpty())
+	{
+		Node<T>* temp = head;
+		head = head->next;
+		
+		T data = temp->data;
+		delete temp;
+		--count;
+
+		return data;
+	}
+	else
+	{
+		return T();
+	}
 }
 
 // ---------------------------------------------
@@ -227,7 +252,7 @@ int main()
 	}
 
 	numbers.print();
-	std::cout << numbers.pop_back() << '\n';
+	std::cout << numbers.shift() << '\n';
 	numbers.print();
 
 
