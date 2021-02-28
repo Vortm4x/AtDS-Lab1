@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 
 // -----------------------------------------
 //  struct Node<T>
@@ -39,7 +40,7 @@ public:
 	T pop_back();
 	int remove(const T& data);
 	void clear();
-	void sort();
+	void sort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;});
 };
 
 // -----------------------------------------------
@@ -316,30 +317,30 @@ void List<T>::swap(Node<T>* a, Node<T>* b)
 //	  Sorts the list [O(N^2)]
 // -----------------------------
 template<typename T>
-void List<T>::sort()
+void List<T>::sort(std::function<bool(const T& a, const T& b)>compare)
 {
 	if (!isEmpty())
 	{
 		Node<T>* current = head;
 		Node<T>* comparing = nullptr;
-		Node<T>* min = nullptr;
+		Node<T>* extremum = nullptr;
 
 		while(current != nullptr)
 		{
 			comparing = current;
-			min = current;
+			extremum = current;
 
 			do
 			{
-				if (comparing->data < min->data)
+				if (compare(comparing->data, extremum->data))
 				{
-					min = comparing;
+					extremum = comparing;
 				}
 				comparing = comparing->next;
 			}
 			while (comparing != nullptr);
 
-			swap(min, current);
+			swap(extremum, current);
 			current = current->next;
 		}
 	}
@@ -360,7 +361,7 @@ int main()
 	numbers.push_front(6);
 	numbers.print();
 
-	numbers.sort();
+	numbers.sort([](int a, int b) {return a > b; });
 	numbers.print();
 
     return 0;
