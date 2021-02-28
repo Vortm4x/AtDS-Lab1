@@ -41,6 +41,7 @@ public:
 	int remove(const T& data);
 	void clear();
 	void sort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;});
+	void reverse();
 };
 
 // -----------------------------------------------
@@ -346,6 +347,29 @@ void List<T>::sort(std::function<bool(const T& a, const T& b)>compare)
 	}
 }
 
+
+// -----------------------------
+//  void List<T>::reverse()
+//	  Reverses the list 
+// -----------------------------
+template<typename T>
+void List<T>::reverse()
+{
+	Node<T>* current = head;
+	Node<T>* previous = nullptr;
+	Node<T>* following = nullptr;
+
+	while (current != nullptr)
+	{
+		following = current->next;
+		current->next = previous;
+		previous = current;
+		current = following;
+	}
+
+	head = previous;
+}
+
 int main()
 {
     List<int> numbers;
@@ -362,6 +386,9 @@ int main()
 	numbers.print();
 
 	numbers.sort([](int a, int b) {return a > b; });
+	numbers.print();
+
+	numbers.reverse();
 	numbers.print();
 
     return 0;
