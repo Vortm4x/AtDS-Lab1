@@ -24,6 +24,7 @@ class List
 private:
     int count;
     Node<T>* head;
+	void swap(Node<T>* a, Node<T>* b);
 
 public:
     List();
@@ -38,6 +39,7 @@ public:
 	T pop_back();
 	int remove(const T& data);
 	void clear();
+	void sort();
 };
 
 // -----------------------------------------------
@@ -297,19 +299,68 @@ void List<T>::clear()
 	}
 }
 
+// ---------------------------------------------------------
+//  void List<T>::swap(Node<T>* a, Node<T>* b)
+//	  Swaps values of two nodes
+// ---------------------------------------------------------
+template<typename T>
+void List<T>::swap(Node<T>* a, Node<T>* b)
+{
+	T temp = a->data;
+	a->data = b->data;
+	b->data = temp;
+}
+
+// -----------------------------
+//  void List<T>::sort()
+//	  Sorts the list [O(N^2)]
+// -----------------------------
+template<typename T>
+void List<T>::sort()
+{
+	if (!isEmpty())
+	{
+		Node<T>* current = head;
+		Node<T>* comparing = nullptr;
+		Node<T>* min = nullptr;
+
+		while(current != nullptr)
+		{
+			comparing = current;
+			min = current;
+
+			do
+			{
+				if (comparing->data < min->data)
+				{
+					min = comparing;
+				}
+				comparing = comparing->next;
+			}
+			while (comparing != nullptr);
+
+			swap(min, current);
+			current = current->next;
+		}
+	}
+}
+
 int main()
 {
     List<int> numbers;
    
-	for (int i(0); i < 6; ++i)
-	{
-		numbers.push_back(2);
-		numbers.push_back(1);
-	}
-	numbers.push_back(2);
-
+	numbers.push_front(2);
+	numbers.push_front(9);
+	numbers.push_front(7);
+	numbers.push_front(4);
+	numbers.push_front(8);
+	numbers.push_front(3);
+	numbers.push_front(1);
+	numbers.push_front(5);
+	numbers.push_front(6);
 	numbers.print();
-	std::cout << numbers.remove(2) << '\n';
+
+	numbers.sort();
 	numbers.print();
 
     return 0;
