@@ -32,11 +32,12 @@ public:
     bool isFull();
     bool isEmpty();
 	void print();
-    void unshift(const T& data);
-	T shift();
+    void push_front(const T& data);
+	T pop_front();
 	void push_back(const T& data);
 	T pop_back();
 	int remove(const T& data);
+	void clear();
 };
 
 // -----------------------------------------------
@@ -68,15 +69,7 @@ List<T>::List()
 template<typename T>
 List<T>::~List()
 {
-    count = 0;
-    Node<T>* current;
-
-    while(head != nullptr)
-    {
-        current = head;
-        head = head->next;
-        delete current;
-    }
+	clear();
 }
 
 // -------------------------
@@ -114,11 +107,11 @@ bool List<T>::isEmpty()
 }
 
 // -----------------------------------------------
-//  void List<T>::unshift(const T& data)
+//  void List<T>::push_front(const T& data)
 //  Puts the node on the begin of list
 // ----------------------------------------------
 template<typename T>
-void List<T>::unshift(const T& data)
+void List<T>::push_front(const T& data)
 {
     if(!isFull())
     {
@@ -132,11 +125,11 @@ void List<T>::unshift(const T& data)
 }
 
 // -----------------------------------------------
-//  T List<T>::shift()
+//  T List<T>::pop_front()
 //  Deletes the node on the begin of list
 // ----------------------------------------------
 template<typename T>
-T List<T>::shift()
+T List<T>::pop_front()
 {
 	if (!isEmpty())
 	{
@@ -286,7 +279,23 @@ void List<T>::print()
 	}
 }
 
+// --------------------------
+//  void List<T>::clear()
+//	  Clears the list
+// -------------------------
+template<typename T>
+void List<T>::clear()
+{
+	count = 0;
+	Node<T>* current;
 
+	while (head != nullptr)
+	{
+		current = head;
+		head = head->next;
+		delete current;
+	}
+}
 
 int main()
 {
