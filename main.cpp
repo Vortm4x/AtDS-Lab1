@@ -34,13 +34,11 @@ public:
     bool isFull();
     bool isEmpty();
 	void print();
-    void push_front(const T& data);
-	T pop_front();
-	void push_back(const T& data);
+    T pop_front();
 	T pop_back();
 	int remove(const T& data);
 	void clear();
-	void sort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;});
+	void resort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;});
 	void reverse();
 };
 
@@ -111,24 +109,6 @@ bool List<T>::isEmpty()
 }
 
 // -----------------------------------------------
-//  void List<T>::push_front(const T& data)
-//  Puts the node on the begin of list
-// ----------------------------------------------
-template<typename T>
-void List<T>::push_front(const T& data)
-{
-    if(!isFull())
-    {
-        head = new Node<T>(data, head);
-        ++count;
-    }
-    else
-    {
-        std::cout << "List overflow\n";
-    }
-}
-
-// -----------------------------------------------
 //  T List<T>::pop_front()
 //  Deletes the node on the begin of list
 // ----------------------------------------------
@@ -139,7 +119,7 @@ T List<T>::pop_front()
 	{
 		Node<T>* temp = head;
 		head = head->next;
-		
+
 		T data = temp->data;
 		delete temp;
 		--count;
@@ -149,38 +129,6 @@ T List<T>::pop_front()
 	else
 	{
 		return T();
-	}
-}
-
-// ---------------------------------------------
-//  void List<T>::push_back(const T& data)
-//	  Puts the node to the end of list
-// --------------------------------------------
-template<typename T>
-void List<T>::push_back(const T& data)
-{
-	if (!isFull())
-	{
-		if(!isEmpty())
-		{
-			Node<T>* end = head;
-
-			while (end->next != nullptr)
-			{
-				end = end->next;
-			}
-
-			end->next = new Node<T>(data);
-		}
-		else
-		{
-			head = new Node<T>(data);
-		}
-		++count;
-	}
-	else
-	{
-		std::cout << "List overflow\n";
 	}
 }
 
@@ -314,11 +262,11 @@ void List<T>::swap(Node<T>* a, Node<T>* b)
 }
 
 // -----------------------------
-//  void List<T>::sort()
+//  void List<T>::resort()
 //	  Sorts the list [O(N^2)]
 // -----------------------------
 template<typename T>
-void List<T>::sort(std::function<bool(const T& a, const T& b)>compare)
+void List<T>::resort(std::function<bool(const T& a, const T& b)>compare)
 {
 	if (!isEmpty())
 	{
@@ -350,7 +298,7 @@ void List<T>::sort(std::function<bool(const T& a, const T& b)>compare)
 
 // -----------------------------
 //  void List<T>::reverse()
-//	  Reverses the list 
+//	  Reverses the list
 // -----------------------------
 template<typename T>
 void List<T>::reverse()
@@ -372,24 +320,7 @@ void List<T>::reverse()
 
 int main()
 {
-    List<int> numbers;
-   
-	numbers.push_front(2);
-	numbers.push_front(9);
-	numbers.push_front(7);
-	numbers.push_front(4);
-	numbers.push_front(8);
-	numbers.push_front(3);
-	numbers.push_front(1);
-	numbers.push_front(5);
-	numbers.push_front(6);
-	numbers.print();
-
-	numbers.sort([](int a, int b) {return a > b; });
-	numbers.print();
-
-	numbers.reverse();
-	numbers.print();
+    std::cout << "compiled\n";
 
     return 0;
 }
