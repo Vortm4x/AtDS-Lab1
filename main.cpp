@@ -26,20 +26,21 @@ private:
     int count;
     Node<T>* head;
 	void swap(Node<T>* a, Node<T>* b);
+	std::function<bool(const T& a, const T& b)> compare;
 
 public:
-    List();
+    List(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b){ return a < b; } );
     ~List();
     int length();
     bool isFull();
     bool isEmpty();
 	void print();
+	void insert(const T& data);
     T pop_front();
 	T pop_back();
 	int remove(const T& data);
 	void clear();
-	void resort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;});
-	void reverse();
+	void resort(std::function<bool(const T& a, const T& b)> compare);
 };
 
 // -----------------------------------------------
@@ -58,8 +59,9 @@ Node<T>::Node(const T& data, Node<T> *const next)
 //  Default list constructor
 // -----------------------------
 template<typename T>
-List<T>::List()
+List<T>::List(std::function<bool(const T& a, const T& b)> compare)
 {
+    this->compare = compare;
     count = 0;
     head = nullptr;
 }
@@ -231,6 +233,57 @@ void List<T>::print()
 	}
 }
 
+// ----------------------------------
+//  void List<T>::insert(const T& data)
+//	Inserts a value on its place
+// ----------------------------------
+template<typename T>
+void List<T>::insert(const T& data)
+{
+    Node<T>* current = head;
+    Node<T>* place = nullptr;
+
+    bool isReversed = false;
+
+    if(count > 1)
+    {
+        if(compare(head->next->data, head->data))
+        {
+            isReversed = true;
+        }
+    }
+
+    while(current != nullptr)
+    {
+        bool cmp = compare(data, current->data);
+
+        if(isReversed)
+        {
+            cmp = !cmp;
+        }
+
+        if(cmp)
+        {
+            break;
+        }
+        else
+        {
+            place = current;
+            current = current->next;
+        }
+    }
+
+    if(place == nullptr)
+    {
+        head = new Node<T>(data, head);
+    }
+    else
+    {
+        place->next = new Node<T>(data, place->next);
+    }
+
+}
+
 // --------------------------
 //  void List<T>::clear()
 //	  Clears the list
@@ -268,6 +321,8 @@ void List<T>::swap(Node<T>* a, Node<T>* b)
 template<typename T>
 void List<T>::resort(std::function<bool(const T& a, const T& b)>compare)
 {
+    this->compare = compare;
+
 	if (!isEmpty())
 	{
 		Node<T>* current = head;
@@ -295,31 +350,26 @@ void List<T>::resort(std::function<bool(const T& a, const T& b)>compare)
 	}
 }
 
-
-// -----------------------------
-//  void List<T>::reverse()
-//	  Reverses the list
-// -----------------------------
-template<typename T>
-void List<T>::reverse()
-{
-	Node<T>* current = head;
-	Node<T>* previous = nullptr;
-	Node<T>* following = nullptr;
-
-	while (current != nullptr)
-	{
-		following = current->next;
-		current->next = previous;
-		previous = current;
-		current = following;
-	}
-
-	head = previous;
-}
-
 int main()
 {
+    List<int> numbers;
+
+    for(int i = 0; i < 5; ++i)
+    {
+        numbers.insert(i * 2);
+    }
+
+    numbers.print();
+
+    numbers.insert(3);
+    numbers.print();
+
+    numbers.resort([](const int& a, const int& b){return a > b; });
+    numbers.print();
+
+    numbers.insert(5);
+    numbers.print();
+
     std::cout << "compiled\n";
 
     return 0;
