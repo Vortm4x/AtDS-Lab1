@@ -39,8 +39,9 @@ public:
 	void push_back(const T& data);
 	T pop_back();
 	int remove(const T& data);
+	bool search(const T& data, std::function<bool(const T& a, const T& b)> equal= [](const T& a, const T& b) {return a < b;} );
 	void clear();
-	void sort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;});
+	void sort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;} );
 	void reverse();
 };
 
@@ -139,7 +140,7 @@ T List<T>::pop_front()
 	{
 		Node<T>* temp = head;
 		head = head->next;
-		
+
 		T data = temp->data;
 		delete temp;
 		--count;
@@ -259,6 +260,31 @@ int List<T>::remove(const T & data)
 	return count;
 }
 
+
+// ------------------------------------
+//  bool List<T>::search(const T& data)
+//	Checks is available searching data
+// ------------------------------------
+template<typename T>
+bool List<T>::search(const T& data, std::function<bool(const T& a, const T& b)> equal)
+{
+    Node<T>* current = head;
+
+    while(current != nullptr)
+    {
+        if(equal(data, current->data))
+        {
+            return true;
+        }
+        else
+        {
+            current = current->next;
+        }
+    }
+
+    return false;
+}
+
 // --------------------------
 //  void List<T>::print()
 //	  Prints the list
@@ -350,7 +376,7 @@ void List<T>::sort(std::function<bool(const T& a, const T& b)>compare)
 
 // -----------------------------
 //  void List<T>::reverse()
-//	  Reverses the list 
+//	  Reverses the list
 // -----------------------------
 template<typename T>
 void List<T>::reverse()
@@ -373,7 +399,7 @@ void List<T>::reverse()
 int main()
 {
     List<int> numbers;
-   
+
 	numbers.push_front(2);
 	numbers.push_front(9);
 	numbers.push_front(7);
@@ -390,6 +416,8 @@ int main()
 
 	numbers.reverse();
 	numbers.print();
+
+	std::cout << numbers.search(11) << "  " << numbers.search(1) << std::endl;
 
     return 0;
 }
