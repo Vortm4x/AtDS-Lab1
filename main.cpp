@@ -39,6 +39,7 @@ public:
     T pop_front();
 	T pop_back();
 	int remove(const T& data);
+	bool search(const T& data, std::function<bool(const T& a, const T& b)> equal = [](const T& a, const T& b){ return a == b; } );
 	void clear();
 	void resort(std::function<bool(const T& a, const T& b)> compare);
 };
@@ -209,6 +210,30 @@ int List<T>::remove(const T & data)
 	return count;
 }
 
+// ------------------------------------
+//  bool List<T>::search(const T& data)
+//	Checks is available searching data
+// ------------------------------------
+template<typename T>
+bool List<T>::search(const T& data, std::function<bool(const T& a, const T& b)> equal)
+{
+    Node<T>* current = head;
+
+    while(current != nullptr)
+    {
+        if(equal(data, current->data))
+        {
+            return true;
+        }
+        else
+        {
+            current = current->next;
+        }
+    }
+
+    return false;
+}
+
 // --------------------------
 //  void List<T>::print()
 //	  Prints the list
@@ -282,6 +307,7 @@ void List<T>::insert(const T& data)
         place->next = new Node<T>(data, place->next);
     }
 
+    ++count;
 }
 
 // --------------------------
@@ -370,7 +396,7 @@ int main()
     numbers.insert(5);
     numbers.print();
 
-    std::cout << "compiled\n";
+    std::cout << numbers.search(10) << " " <<numbers.search(0) << std::endl;
 
     return 0;
 }
