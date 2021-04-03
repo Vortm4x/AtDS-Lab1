@@ -33,7 +33,7 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
-    T& operator[](const int& index);
+    T operator[](const int& index);
 	void print();
 	void insert(const T& data);
     T pop_front();
@@ -76,10 +76,15 @@ List<T>::List(const List<T>& list)
     head = initChain(list.head);
 }
 
+// --------------------------------------------
+//  Node<T>* List<T>::initChain(Node<T>* node)
+//  Recursivly creates the same "sublist" as a
+//  parameter one from node to end
+// --------------------------------------------
 template<typename T>
 Node<T>* List<T>::initChain(Node<T>* node)
 {
-    return nullptr;
+    return (node == nullptr) ? nullptr : new Node<T>(node->data, initChain(node->next));
 }
 
 // ----------------------------
@@ -131,7 +136,7 @@ bool List<T>::isEmpty()
 //  List indexation
 // -----------------------------------------
 template<typename T>
-T& List<T>::operator[](const int& index)
+T List<T>::operator[](const int& index)
 {
     Node<T>* current = head;
 
@@ -348,6 +353,12 @@ void List<T>::clear()
 	}
 }
 
+void testCopy(List<int> list)
+{
+    list.insert(104);
+    list.print();
+}
+
 int main()
 {
     List<int> numbers;
@@ -368,8 +379,6 @@ int main()
     std::cout << numbers.search(10) << " " <<numbers.search(0) << std::endl;
 
     std::cout << numbers[0] << ' ' << numbers[3] << std::endl;
-    numbers[0] = 999;
-    numbers[3] = 666;
     std::cout << numbers[0] << ' ' << numbers[3] << std::endl;
 
     List<int> same;
@@ -383,6 +392,9 @@ int main()
 
 
     std::cout << same.remove(2) << ' ' << same.remove(3) << ' ' << same.remove(2) << std::endl;
+
+    testCopy(numbers);
+    numbers.print();
 
     return 0;
 }
