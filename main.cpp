@@ -33,6 +33,7 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
+    T& operator[](const int& index);
 	void print();
     void push_front(const T& data);
 	T pop_front();
@@ -109,6 +110,23 @@ template<typename T>
 bool List<T>::isEmpty()
 {
     return (head == nullptr);
+}
+
+// -----------------------------------------
+//  T List<T>::operator[](const int& index)
+//  List indexation
+// -----------------------------------------
+template<typename T>
+T& List<T>::operator[](const int& index)
+{
+    Node<T>* current = head;
+
+    for(int i(0); i < index; ++i)
+    {
+        current = current->next;
+    }
+
+    return current->data;
 }
 
 // -----------------------------------------------
@@ -415,6 +433,9 @@ int main()
 	numbers.print();
 
 	numbers.reverse();
+	numbers.print();
+
+	numbers[0] = 1000;
 	numbers.print();
 
 	std::cout << numbers.search(11) << "  " << numbers.search(1) << std::endl;
