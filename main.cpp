@@ -24,9 +24,11 @@ class List
 private:
     int count;
     Node<T>* head;
+    Node<T>* initChain(Node<T>* node);
 
 public:
     List();
+    List(const List<T>& list);
     ~List();
     int length();
     bool isFull();
@@ -63,6 +65,23 @@ List<T>::List()
     head = nullptr;
 }
 
+// -----------------------------------
+//  List<T>::List(сonst List<T>& list)
+//  Copying list constructor
+// -----------------------------------
+template<typename T>
+List<T>::List(const List<T>& list)
+{
+    count = list.count;
+    head = initChain(list.head);
+}
+
+template<typename T>
+Node<T>* List<T>::initChain(Node<T>* node)
+{
+    return nullptr;
+}
+
 // ----------------------------
 //  List<T>::~List()
 //  Default list destructor
@@ -97,10 +116,10 @@ bool List<T>::isFull()
     return result;
 }
 
-// ---------------------------------
+// ----------------------------
 //  bool List<T>::isEmpty()
 //  Checks the nodes existance
-// ---------------------------------
+// ----------------------------
 template<typename T>
 bool List<T>::isEmpty()
 {
@@ -108,8 +127,8 @@ bool List<T>::isEmpty()
 }
 
 // -----------------------------------------
-//  template<typename T>
 //  T List<T>::operator[](const int& index)
+//  List indexation
 // -----------------------------------------
 template<typename T>
 T& List<T>::operator[](const int& index)
@@ -150,7 +169,7 @@ T List<T>::pop_front()
 
 // ---------------------------------------
 //  T List<T>::pop_back()
-//	  Deletes the node at the end of list
+//	Deletes the node at the end of list
 // ---------------------------------------
 template<typename T>
 T List<T>::pop_back()
