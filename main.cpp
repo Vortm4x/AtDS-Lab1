@@ -1,5 +1,4 @@
 #include <iostream>
-#include <functional>
 
 // -----------------------------------------
 //  struct Node<T>
@@ -40,9 +39,9 @@ public:
 	void push_back(const T& data);
 	T pop_back();
 	int remove(const T& data);
-	bool search(const T& data, std::function<bool(const T& a, const T& b)> equal= [](const T& a, const T& b) {return a < b;} );
+	bool search(const T& data);
 	void clear();
-	void sort(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b) {return a < b;} );
+	void sort();
 	void reverse();
 };
 
@@ -205,7 +204,7 @@ void List<T>::push_back(const T& data)
 
 // ---------------------------------------------
 //  T List<T>::pop_back()
-//	  Deletes the node at the end of list
+//	Deletes the node at the end of list
 // --------------------------------------------
 template<typename T>
 T List<T>::pop_back()
@@ -237,7 +236,7 @@ T List<T>::pop_back()
 
 // ----------------------------------------------------
 //  void List<T>::remove()
-//	  Removes all found values as in arguments,
+//	Removes all found values as in arguments,
 //  if there are no, does nothing; returns size
 // ----------------------------------------------------
 template<typename T>
@@ -284,13 +283,13 @@ int List<T>::remove(const T & data)
 //	Checks is available searching data
 // ------------------------------------
 template<typename T>
-bool List<T>::search(const T& data, std::function<bool(const T& a, const T& b)> equal)
+bool List<T>::search(const T& data)
 {
     Node<T>* current = head;
 
     while(current != nullptr)
     {
-        if(equal(data, current->data))
+        if(data == current->data)
         {
             return true;
         }
@@ -362,30 +361,30 @@ void List<T>::swap(Node<T>* a, Node<T>* b)
 //	  Sorts the list [O(N^2)]
 // -----------------------------
 template<typename T>
-void List<T>::sort(std::function<bool(const T& a, const T& b)>compare)
+void List<T>::sort()
 {
 	if (!isEmpty())
 	{
 		Node<T>* current = head;
 		Node<T>* comparing = nullptr;
-		Node<T>* extremum = nullptr;
+		Node<T>* min = nullptr;
 
 		while(current != nullptr)
 		{
 			comparing = current;
-			extremum = current;
+			min = current;
 
 			do
 			{
-				if (compare(comparing->data, extremum->data))
+				if (comparing->data < min->data)
 				{
-					extremum = comparing;
+					min = comparing;
 				}
 				comparing = comparing->next;
 			}
 			while (comparing != nullptr);
 
-			swap(extremum, current);
+			swap(min, current);
 			current = current->next;
 		}
 	}
@@ -429,7 +428,7 @@ int main()
 	numbers.push_front(6);
 	numbers.print();
 
-	numbers.sort([](int a, int b) {return a > b; });
+	numbers.sort();
 	numbers.print();
 
 	numbers.reverse();
