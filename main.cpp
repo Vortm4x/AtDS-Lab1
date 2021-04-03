@@ -25,9 +25,11 @@ private:
     int count;
     Node<T>* head;
 	void swap(Node<T>* a, Node<T>* b);
+	Node<T>* initChain(Node<T>* node);
 
 public:
     List();
+    List<T>(const List<T>& list);
     ~List();
     int length();
     bool isFull();
@@ -67,6 +69,28 @@ List<T>::List()
     head = nullptr;
 }
 
+// -----------------------------------
+//  List<T>::List(сonst List<T>& list)
+//  Copying list constructor
+// -----------------------------------
+template<typename T>
+List<T>::List(const List<T>& list)
+{
+    count = list.count;
+    head = initChain(list.head);
+}
+
+// --------------------------------------------
+//  Node<T>* List<T>::initChain(Node<T>* node)
+//  Recursivly creates the same "sublist" as a
+//  parameter one from node to end
+// --------------------------------------------
+template<typename T>
+Node<T>* List<T>::initChain(Node<T>* node)
+{
+    return (node == nullptr) ? nullptr : new Node<T>(node->data, initChain(node->next));
+}
+
 // ----------------------------
 //  List<T>::~List()
 //  Default list destructor
@@ -86,7 +110,6 @@ int List<T>::length()
 {
     return count;
 }
-
 
 // ------------------------------
 //  bool List<T>::isFull()
@@ -407,6 +430,12 @@ void List<T>::reverse()
 	head = previous;
 }
 
+void testCopy(List<int> list)
+{
+    list.push_back(104);
+    list.print();
+}
+
 int main()
 {
     List<int> numbers;
@@ -429,6 +458,9 @@ int main()
 	numbers.print();
 
 	numbers[0] = 1000;
+	numbers.print();
+
+	testCopy(numbers);
 	numbers.print();
 
 	std::cout << numbers.search(11) << "  " << numbers.search(1) << std::endl;
