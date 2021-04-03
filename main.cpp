@@ -33,6 +33,7 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
+    T operator=(const List<T>& list);
     T operator[](const int& index);
 	void print();
 	void insert(const T& data);
@@ -129,6 +130,12 @@ template<typename T>
 bool List<T>::isEmpty()
 {
     return (head == nullptr);
+}
+
+template<typename T>
+T List<T>::operator=(const List<T>& list)
+{
+    this = list;
 }
 
 // -----------------------------------------
