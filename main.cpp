@@ -107,10 +107,10 @@ bool List<T>::isEmpty()
     return (head == nullptr);
 }
 
-// ---------------------------------
-//  bool List<T>::isEmpty()
-//  Checks the nodes existance
-// ---------------------------------
+// -----------------------------------------
+//  template<typename T>
+//  T List<T>::operator[](const int& index)
+// -----------------------------------------
 template<typename T>
 T List<T>::operator[](const int& index)
 {
@@ -182,45 +182,54 @@ T List<T>::pop_back()
 
 // ----------------------------------------------------
 //  void List<T>::remove()
-//	  Removes all found values as in arguments,
-//  if there are no, does nothing; returns size
+//	Removes all found values as in arguments,
+//  if there are no, does nothing; returns deletions
 // ----------------------------------------------------
 template<typename T>
 int List<T>::remove(const T & data)
 {
+    int deletions = 0;
+
 	if(!isEmpty())
 	{
 		Node<T>* previous = nullptr;
 		Node<T>* current = head;
 
-		do
-		{
-			if (current->data == data)
-			{
-				if (previous == nullptr)
-				{
-					head = head->next;
-					delete current;
-					current = head;
-				}
-				else
-				{
-					previous->next = current->next;
-					delete current;
-					current = previous->next;
-				}
+		while(current != nullptr)
+        {
+            if(current->data == data)
+            {
+                break;
+            }
 
-				--count;
-			}
-			else
-			{
-				previous = current;
-				current = current->next;
-			}
-		} while (current != nullptr);
+            previous = current;
+            current = current->next;
+        }
+
+        if(previous == nullptr)
+        {
+            while( (head != nullptr) && (head->data == data) )
+            {
+                previous = head;
+                head = head->next;
+                delete previous;
+                ++deletions;
+            }
+        }
+        else
+        {
+            while( (current != nullptr) && (current->data == data) )
+            {
+                previous = current;
+                current = current->next;
+                delete previous;
+                ++deletions;
+            }
+        }
 	}
 
-	return count;
+    count -= deletions;
+	return deletions;
 }
 
 // ------------------------------------
@@ -238,10 +247,8 @@ bool List<T>::search(const T& data)
         {
             return true;
         }
-        else
-        {
-            current = current->next;
-        }
+
+        current = current->next;
     }
 
     return false;
@@ -306,7 +313,7 @@ void List<T>::insert(const T& data)
 
 // --------------------------
 //  void List<T>::clear()
-//	  Clears the list
+//	Clears the list
 // -------------------------
 template<typename T>
 void List<T>::clear()
@@ -342,6 +349,18 @@ int main()
     std::cout << numbers.search(10) << " " <<numbers.search(0) << std::endl;
 
     std::cout << numbers[0] << ' ' << numbers[3] << std::endl;
+
+    List<int> same;
+
+    for(int i = 0; i < 8; ++i)
+    {
+        same.insert(3);
+    }
+
+    same.print();
+
+
+    std::cout << same.remove(2) << ' ' << same.remove(3) << ' ' << same.remove(2) << std::endl;
 
     return 0;
 }
