@@ -1,5 +1,4 @@
 #include <iostream>
-#include <functional>
 
 // -----------------------------------------
 //  struct Node<T>
@@ -25,11 +24,9 @@ class List
 private:
     int count;
     Node<T>* head;
-	void swap(Node<T>* a, Node<T>* b);
-	std::function<bool(const T& a, const T& b)> compare;
 
 public:
-    List(std::function<bool(const T& a, const T& b)> compare = [](const T& a, const T& b){ return a < b; } );
+    List();
     ~List();
     int length();
     bool isFull();
@@ -39,9 +36,8 @@ public:
     T pop_front();
 	T pop_back();
 	int remove(const T& data);
-	bool search(const T& data, std::function<bool(const T& a, const T& b)> equal = [](const T& a, const T& b){ return a == b; } );
+	bool search(const T& data);
 	void clear();
-	void resort(std::function<bool(const T& a, const T& b)> compare);
 };
 
 // -----------------------------------------------
@@ -60,9 +56,8 @@ Node<T>::Node(const T& data, Node<T> *const next)
 //  Default list constructor
 // -----------------------------
 template<typename T>
-List<T>::List(std::function<bool(const T& a, const T& b)> compare)
+List<T>::List()
 {
-    this->compare = compare;
     count = 0;
     head = nullptr;
 }
@@ -215,13 +210,13 @@ int List<T>::remove(const T & data)
 //	Checks is available searching data
 // ------------------------------------
 template<typename T>
-bool List<T>::search(const T& data, std::function<bool(const T& a, const T& b)> equal)
+bool List<T>::search(const T& data)
 {
     Node<T>* current = head;
 
     while(current != nullptr)
     {
-        if(equal(data, current->data))
+        if(data == current->data)
         {
             return true;
         }
@@ -265,46 +260,27 @@ void List<T>::print()
 template<typename T>
 void List<T>::insert(const T& data)
 {
+    Node<T>* previous = nullptr;
     Node<T>* current = head;
-    Node<T>* place = nullptr;
-
-    bool isReversed = false;
-
-    if(count > 1)
-    {
-        if(compare(head->next->data, head->data))
-        {
-            isReversed = true;
-        }
-    }
 
     while(current != nullptr)
     {
-        bool cmp = compare(data, current->data);
-
-        if(isReversed)
-        {
-            cmp = !cmp;
-        }
-
-        if(cmp)
+        if(data < current->data)
         {
             break;
         }
-        else
-        {
-            place = current;
-            current = current->next;
-        }
+
+        previous = current;
+        current = current->next;
     }
 
-    if(place == nullptr)
+    if(previous == nullptr)
     {
         head = new Node<T>(data, head);
     }
     else
     {
-        place->next = new Node<T>(data, place->next);
+        previous->next = new Node<T>(data, previous->next);
     }
 
     ++count;
@@ -328,54 +304,6 @@ void List<T>::clear()
 	}
 }
 
-// ---------------------------------------------------------
-//  void List<T>::swap(Node<T>* a, Node<T>* b)
-//	  Swaps values of two nodes
-// ---------------------------------------------------------
-template<typename T>
-void List<T>::swap(Node<T>* a, Node<T>* b)
-{
-	T temp = a->data;
-	a->data = b->data;
-	b->data = temp;
-}
-
-// -----------------------------
-//  void List<T>::resort()
-//	  Sorts the list [O(N^2)]
-// -----------------------------
-template<typename T>
-void List<T>::resort(std::function<bool(const T& a, const T& b)>compare)
-{
-    this->compare = compare;
-
-	if (!isEmpty())
-	{
-		Node<T>* current = head;
-		Node<T>* comparing = nullptr;
-		Node<T>* extremum = nullptr;
-
-		while(current != nullptr)
-		{
-			comparing = current;
-			extremum = current;
-
-			do
-			{
-				if (compare(comparing->data, extremum->data))
-				{
-					extremum = comparing;
-				}
-				comparing = comparing->next;
-			}
-			while (comparing != nullptr);
-
-			swap(extremum, current);
-			current = current->next;
-		}
-	}
-}
-
 int main()
 {
     List<int> numbers;
@@ -388,9 +316,6 @@ int main()
     numbers.print();
 
     numbers.insert(3);
-    numbers.print();
-
-    numbers.resort([](const int& a, const int& b){return a > b; });
     numbers.print();
 
     numbers.insert(5);
