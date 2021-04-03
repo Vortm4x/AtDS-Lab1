@@ -31,7 +31,7 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
-    T operator[](const int& index);
+    T& operator[](const int& index);
 	void print();
 	void insert(const T& data);
     T pop_front();
@@ -112,7 +112,7 @@ bool List<T>::isEmpty()
 //  T List<T>::operator[](const int& index)
 // -----------------------------------------
 template<typename T>
-T List<T>::operator[](const int& index)
+T& List<T>::operator[](const int& index)
 {
     Node<T>* current = head;
 
@@ -148,10 +148,10 @@ T List<T>::pop_front()
 	}
 }
 
-// ---------------------------------------------
+// ---------------------------------------
 //  T List<T>::pop_back()
 //	  Deletes the node at the end of list
-// --------------------------------------------
+// ---------------------------------------
 template<typename T>
 T List<T>::pop_back()
 {
@@ -180,11 +180,11 @@ T List<T>::pop_back()
 	}
 }
 
-// ----------------------------------------------------
+// --------------------------------------------------
 //  void List<T>::remove()
 //	Removes all found values as in arguments,
 //  if there are no, does nothing; returns deletions
-// ----------------------------------------------------
+// --------------------------------------------------
 template<typename T>
 int List<T>::remove(const T & data)
 {
@@ -254,10 +254,10 @@ bool List<T>::search(const T& data)
     return false;
 }
 
-// --------------------------
+// -----------------------
 //  void List<T>::print()
 //	  Prints the list
-// -------------------------
+// -----------------------
 template<typename T>
 void List<T>::print()
 {
@@ -278,10 +278,10 @@ void List<T>::print()
 	}
 }
 
-// ----------------------------------
+// ------------------------------------
 //  void List<T>::insert(const T& data)
 //	Inserts a value on its place
-// ----------------------------------
+// ------------------------------------
 template<typename T>
 void List<T>::insert(const T& data)
 {
@@ -311,10 +311,10 @@ void List<T>::insert(const T& data)
     ++count;
 }
 
-// --------------------------
+// -----------------------
 //  void List<T>::clear()
 //	Clears the list
-// -------------------------
+// -----------------------
 template<typename T>
 void List<T>::clear()
 {
@@ -348,6 +348,9 @@ int main()
 
     std::cout << numbers.search(10) << " " <<numbers.search(0) << std::endl;
 
+    std::cout << numbers[0] << ' ' << numbers[3] << std::endl;
+    numbers[0] = 999;
+    numbers[3] = 666;
     std::cout << numbers[0] << ' ' << numbers[3] << std::endl;
 
     List<int> same;
