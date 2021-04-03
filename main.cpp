@@ -242,39 +242,33 @@ T List<T>::pop_back()
 template<typename T>
 int List<T>::remove(const T & data)
 {
-	if(!isEmpty())
-	{
-		Node<T>* previous = nullptr;
-		Node<T>* current = head;
+	int deletions(0);
 
-		do
-		{
-			if (current->data == data)
-			{
-				if (previous == nullptr)
-				{
-					head = head->next;
-					delete current;
-					current = head;
-				}
-				else
-				{
-					previous->next = current->next;
-					delete current;
-					current = previous->next;
-				}
+	Node<T>* previous = nullptr;
+	Node<T>* current = head;
 
-				--count;
-			}
-			else
-			{
-				previous = current;
-				current = current->next;
-			}
-		} while (current != nullptr);
-	}
+	while(current != nullptr)
+    {
+        if(current->data == data)
+        {
+            if(previous == nullptr)
+            {
+                head = head->next;
+                delete current;
+                current = head;
+            }
+            else
+            {
+                previous->next = current->next;
+                delete current;
+                current = previous->next;
+            }
+            ++deletions;
+        }
+    }
 
-	return count;
+    count -= deletions;
+	return deletions;
 }
 
 
