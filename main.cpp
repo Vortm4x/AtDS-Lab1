@@ -33,7 +33,7 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
-    T operator=(const List<T>& list);
+    void operator=(const List<T>& list);
     T operator[](const int& index);
 	void print();
 	void insert(const T& data);
@@ -132,10 +132,16 @@ bool List<T>::isEmpty()
     return (head == nullptr);
 }
 
+// ---------------------------------------------
+//  void List<T>::operator=(const List<T>& list)
+//  Assigning operator
+// ---------------------------------------------
 template<typename T>
-T List<T>::operator=(const List<T>& list)
+void List<T>::operator=(const List<T>& list)
 {
-    this = list;
+    this->clear();
+    count = list.count;
+    head = initChain(list.head);
 }
 
 // -----------------------------------------
@@ -402,6 +408,9 @@ int main()
 
     testCopy(numbers);
     numbers.print();
+
+    same = numbers;
+    same.print();
 
     return 0;
 }
