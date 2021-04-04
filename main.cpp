@@ -34,6 +34,7 @@ public:
     int length();
     bool isFull();
     bool isEmpty();
+    void operator=(const List<T>& list);
     T& operator[](const int& index);
 	void print();
     void push_front(const T& data);
@@ -132,6 +133,19 @@ template<typename T>
 bool List<T>::isEmpty()
 {
     return (head == nullptr);
+}
+
+
+// ---------------------------------------------
+//  void List<T>::operator=(const List<T>& list)
+//  Assigning operator
+// ---------------------------------------------
+template<typename T>
+void List<T>::operator=(const List<T>& list)
+{
+    this->clear();
+    count = list.count;
+    head = initChain(list.head);
 }
 
 // -----------------------------------------
@@ -464,6 +478,12 @@ int main()
 	numbers.print();
 
 	std::cout << numbers.search(11) << "  " << numbers.search(1) << std::endl;
+
+    List<int> same;
+
+    same = numbers;
+    same.print();
+
 
     return 0;
 }
