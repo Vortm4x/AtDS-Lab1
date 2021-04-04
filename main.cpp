@@ -188,6 +188,7 @@ T List<T>::pop_front()
 	}
 	else
 	{
+	    std::cout << "List underflow\n";
 		return T();
 	}
 }
@@ -220,6 +221,7 @@ T List<T>::pop_back()
 	}
 	else
 	{
+	    std::cout << "List underflow\n";
 		return T();
 	}
 }
@@ -329,30 +331,37 @@ void List<T>::print()
 template<typename T>
 void List<T>::insert(const T& data)
 {
-    Node<T>* previous = nullptr;
-    Node<T>* current = head;
-
-    while(current != nullptr)
+    if(!isFull())
     {
-        if(data < current->data)
+        Node<T>* previous = nullptr;
+        Node<T>* current = head;
+
+        while(current != nullptr)
         {
-            break;
+            if(data < current->data)
+            {
+                break;
+            }
+
+            previous = current;
+            current = current->next;
         }
 
-        previous = current;
-        current = current->next;
-    }
+        if(previous == nullptr)
+        {
+            head = new Node<T>(data, head);
+        }
+        else
+        {
+            previous->next = new Node<T>(data, previous->next);
+        }
 
-    if(previous == nullptr)
-    {
-        head = new Node<T>(data, head);
+        ++count;
     }
     else
     {
-        previous->next = new Node<T>(data, previous->next);
+        std::cout << "List overflow\n";
     }
-
-    ++count;
 }
 
 // -----------------------
