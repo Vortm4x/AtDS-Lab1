@@ -484,6 +484,5 @@ int main()
     same = numbers;
     same.print();
 
-
     return 0;
 }
