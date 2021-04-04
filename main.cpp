@@ -153,11 +153,16 @@ void List<T>::operator=(const List<T>& list)
 template<typename T>
 T List<T>::operator[](const int& index)
 {
-    Node<T>* current = head;
+    Node<T>* current = nullptr;
 
-    for(int i(0); i < index; ++i)
+    if( (0 <= index) && (index < count) )
     {
-        current = current->next;
+        current = head;
+
+        for(int i(0); i < index; ++i)
+        {
+            current = current->next;
+        }
     }
 
     return current->data;
