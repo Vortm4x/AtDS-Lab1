@@ -42,6 +42,8 @@ public:
 	int remove(const T& data);
 	bool search(const T& data);
 	void clear();
+
+	T sum();
 };
 
 // -----------------------------------------------
@@ -366,6 +368,21 @@ void List<T>::clear()
 	}
 }
 
+template<typename T>
+T List<T>::sum()
+{
+    T value = T();
+    Node<T>* current = head;
+
+    while(current != nullptr)
+    {
+        value += current->data;
+        current = current->next;
+    }
+
+    return value;
+}
+
 void testCopy(List<int> list)
 {
     list.insert(104);
@@ -411,6 +428,8 @@ int main()
 
     same = numbers;
     same.print();
+
+    std::cout << same.sum() << std::endl;
 
     return 0;
 }
